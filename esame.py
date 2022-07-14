@@ -9,7 +9,6 @@ class CSVTimeSeriesFile():
         self.name=name
 
     def get_data(self):
-
         count=0
 
         my_file=open(self.name,'r')
