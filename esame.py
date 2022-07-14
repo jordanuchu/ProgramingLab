@@ -19,19 +19,22 @@ class CSVTimeSeriesFile():
             if count>=1:
                 elementi = line.split(',')
 
-                if type(int(elementi[0]))==int:
-                    self.lista_linea.append(int(elementi[0]))
-                    if type(float(elementi[1])==float):
-                        self.lista_linea.append(float(elementi[1]))
-                        self.lista_dati.append(self.lista_linea)
-                        self.lista_linea=[]
+                try:
+                    if type(int(elementi[0])) == int:
+                        self.lista_linea.append(int(elementi[0]))
+                        if type(float(elementi[1]) == float):
+                            self.lista_linea.append(float(elementi[1]))
+                            self.lista_dati.append(self.lista_linea)
+                            self.lista_linea = []
+                except ExamException:
+                    pass
+
             count = count + 1
         my_file.close()
         return self.lista_dati
 
 #--------------------------------------------------------------------------------------------------------
 def compute_daily_max_difference(mylist):
-    mia_lista =mylist.copy()
     lista_ListEpochGiorno = []
     primo_epoch = 1551398400
     lista_EpochGiorno =[]
@@ -41,18 +44,18 @@ def compute_daily_max_difference(mylist):
 
     to=0
     x=0
-    while x<len(lista_AllEpoch):
-        if(lista_AllEpoch[x]<lista_AllEpoch[x-1]):
-            to=1
-        x=x+1
+    while x < len(lista_AllEpoch):
+        if (lista_AllEpoch[x] < lista_AllEpoch[x - 1]):
+            to = 1
+        x = x + 1
 
-    if(to==1):
+    if (to == 1):
         raise ExamException("la nostra lista non è ordinata")
-    if len(lista_AllEpoch)!=len(set(lista_AllEpoch)):
+    if len(lista_AllEpoch) != len(set(lista_AllEpoch)):
         raise ExamException('la nostra lista contiene duplicati')
 
-
-    for y in mia_lista:
+        
+    for y in mylist:
         lista_AllEpoch.append(y[0])
         dico_EpochTemp[y[0]] =y[1]
 
@@ -98,9 +101,11 @@ def compute_daily_max_difference(mylist):
 
 
     for q in lista_listepochgiornoModif:
-        val=differenza(q)
-        lista_finale.append(val)
-
+        if len(q)==1:
+            lista_listepochgiornoModif.append(None)
+        else:
+            val = differenza(q)
+            lista_finale.append(val)
 
     return lista_finale
 #----------------------------------------------------------------------------------------------------------
