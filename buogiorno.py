@@ -1,1 +1,0 @@
-print("buongiorno a tutti mio nome è jordan uchu")
